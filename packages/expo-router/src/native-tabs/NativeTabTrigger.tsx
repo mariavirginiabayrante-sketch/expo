@@ -2,28 +2,28 @@
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { isValidElement, type ReactElement, type ReactNode } from 'react';
-import type { ImageSourcePropType } from 'react-native';
+import { type ImageSourcePropType } from 'react-native';
 
 import { NativeTabsTriggerTabBar } from './NativeTabsTriggerTabBar';
-import type {
-  ExtendedNativeTabOptions,
-  NativeTabOptions,
-  NativeTabsTriggerTabBarProps,
-  NativeTabTriggerProps,
+import {
+  type ExtendedNativeTabOptions,
+  type NativeTabOptions,
+  type NativeTabsTriggerTabBarProps,
+  type NativeTabTriggerProps,
 } from './types';
 import { filterAllowedChildrenElements, isChildOfType } from './utils';
 import { useIsPreview } from '../link/preview/PreviewRouteContext';
+import type { VectorIconProps } from '../primitives';
 import { useSafeLayoutEffect } from '../views/useSafeLayoutEffect';
 import {
-  Icon,
-  Badge,
-  Label,
-  type LabelProps,
-  type IconProps,
-  type BadgeProps,
+  NativeTabsTriggerIcon,
+  NativeTabsTriggerBadge,
+  NativeTabsTriggerLabel,
+  NativeTabsTriggerVectorIcon,
+  type NativeTabsTriggerBadgeProps,
+  type NativeTabsTriggerLabelProps,
+  type NativeTabsTriggerIconProps,
   type SourceIconCombination,
-  VectorIcon,
-  type VectorIconProps,
 } from './common/elements';
 
 /**
@@ -56,7 +56,7 @@ import {
  *   return (
  *     <View>
  *       <NativeTabs.Trigger>
- *         <Label>Home</Label>
+ *         <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
  *       </NativeTabs.Trigger>
  *       <Text>This is home screen!</Text>
  *     </View>
@@ -92,6 +92,10 @@ function NativeTabTriggerImpl(props: NativeTabTriggerProps) {
 
 export const NativeTabTrigger = Object.assign(NativeTabTriggerImpl, {
   TabBar: NativeTabsTriggerTabBar,
+  Label: NativeTabsTriggerLabel,
+  Icon: NativeTabsTriggerIcon,
+  Badge: NativeTabsTriggerBadge,
+  VectorIcon: NativeTabsTriggerVectorIcon,
 });
 
 export function convertTabPropsToOptions(
@@ -112,18 +116,18 @@ export function convertTabPropsToOptions(
         role: role ?? options?.role,
       };
   const allowedChildren = filterAllowedChildrenElements(children, [
-    Badge,
-    Label,
-    Icon,
+    NativeTabsTriggerBadge,
+    NativeTabsTriggerLabel,
+    NativeTabsTriggerIcon,
     NativeTabsTriggerTabBar,
   ]);
   return allowedChildren.reduce<ExtendedNativeTabOptions>(
     (acc, child) => {
-      if (isChildOfType(child, Badge)) {
+      if (isChildOfType(child, NativeTabsTriggerBadge)) {
         appendBadgeOptions(acc, child.props);
-      } else if (isChildOfType(child, Label)) {
+      } else if (isChildOfType(child, NativeTabsTriggerLabel)) {
         appendLabelOptions(acc, child.props);
-      } else if (isChildOfType(child, Icon)) {
+      } else if (isChildOfType(child, NativeTabsTriggerIcon)) {
         appendIconOptions(acc, child.props);
       } else if (isChildOfType(child, NativeTabsTriggerTabBar)) {
         appendTabBarOptions(acc, child.props);
@@ -134,7 +138,7 @@ export function convertTabPropsToOptions(
   );
 }
 
-function appendBadgeOptions(options: ExtendedNativeTabOptions, props: BadgeProps) {
+function appendBadgeOptions(options: ExtendedNativeTabOptions, props: NativeTabsTriggerBadgeProps) {
   if (props.children) {
     options.badgeValue = String(props.children);
     options.selectedBadgeBackgroundColor = props.selectedBackgroundColor;
@@ -146,7 +150,7 @@ function appendBadgeOptions(options: ExtendedNativeTabOptions, props: BadgeProps
   }
 }
 
-function appendLabelOptions(options: ExtendedNativeTabOptions, props: LabelProps) {
+function appendLabelOptions(options: ExtendedNativeTabOptions, props: NativeTabsTriggerLabelProps) {
   if (props.hidden) {
     options.title = '';
   } else {
@@ -157,7 +161,10 @@ function appendLabelOptions(options: ExtendedNativeTabOptions, props: LabelProps
   }
 }
 
-export function appendIconOptions(options: ExtendedNativeTabOptions, props: IconProps) {
+export function appendIconOptions(
+  options: ExtendedNativeTabOptions,
+  props: NativeTabsTriggerIconProps
+) {
   if ('src' in props && props.src) {
     const icon = convertIconSrcToIconOption(props);
     options.icon = icon?.icon;
@@ -216,7 +223,7 @@ function convertIconSrcToIconOption(
 function convertSrcOrComponentToSrc(src: ImageSourcePropType | ReactElement | undefined) {
   if (src) {
     if (isValidElement(src)) {
-      if (src.type === VectorIcon) {
+      if (src.type === NativeTabsTriggerVectorIcon) {
         const props = src.props as VectorIconProps<string>;
         return { src: props.family.getImageSource(props.name, 24, 'white') };
       } else {

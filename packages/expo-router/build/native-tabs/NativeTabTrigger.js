@@ -42,7 +42,7 @@ const elements_1 = require("./common/elements");
  *   return (
  *     <View>
  *       <NativeTabs.Trigger>
- *         <Label>Home</Label>
+ *         <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
  *       </NativeTabs.Trigger>
  *       <Text>This is home screen!</Text>
  *     </View>
@@ -73,6 +73,10 @@ function NativeTabTriggerImpl(props) {
 }
 exports.NativeTabTrigger = Object.assign(NativeTabTriggerImpl, {
     TabBar: NativeTabsTriggerTabBar_1.NativeTabsTriggerTabBar,
+    Label: elements_1.NativeTabsTriggerLabel,
+    Icon: elements_1.NativeTabsTriggerIcon,
+    Badge: elements_1.NativeTabsTriggerBadge,
+    VectorIcon: elements_1.NativeTabsTriggerVectorIcon,
 });
 function convertTabPropsToOptions({ options, hidden, children, role, disablePopToTop, disableScrollToTop }, isDynamic = false) {
     const initialOptions = isDynamic
@@ -89,19 +93,19 @@ function convertTabPropsToOptions({ options, hidden, children, role, disablePopT
             role: role ?? options?.role,
         };
     const allowedChildren = (0, utils_1.filterAllowedChildrenElements)(children, [
-        elements_1.Badge,
-        elements_1.Label,
-        elements_1.Icon,
+        elements_1.NativeTabsTriggerBadge,
+        elements_1.NativeTabsTriggerLabel,
+        elements_1.NativeTabsTriggerIcon,
         NativeTabsTriggerTabBar_1.NativeTabsTriggerTabBar,
     ]);
     return allowedChildren.reduce((acc, child) => {
-        if ((0, utils_1.isChildOfType)(child, elements_1.Badge)) {
+        if ((0, utils_1.isChildOfType)(child, elements_1.NativeTabsTriggerBadge)) {
             appendBadgeOptions(acc, child.props);
         }
-        else if ((0, utils_1.isChildOfType)(child, elements_1.Label)) {
+        else if ((0, utils_1.isChildOfType)(child, elements_1.NativeTabsTriggerLabel)) {
             appendLabelOptions(acc, child.props);
         }
-        else if ((0, utils_1.isChildOfType)(child, elements_1.Icon)) {
+        else if ((0, utils_1.isChildOfType)(child, elements_1.NativeTabsTriggerIcon)) {
             appendIconOptions(acc, child.props);
         }
         else if ((0, utils_1.isChildOfType)(child, NativeTabsTriggerTabBar_1.NativeTabsTriggerTabBar)) {
@@ -189,7 +193,7 @@ function convertIconSrcToIconOption(icon) {
 function convertSrcOrComponentToSrc(src) {
     if (src) {
         if ((0, react_1.isValidElement)(src)) {
-            if (src.type === elements_1.VectorIcon) {
+            if (src.type === elements_1.NativeTabsTriggerVectorIcon) {
                 const props = src.props;
                 return { src: props.family.getImageSource(props.name, 24, 'white') };
             }
