@@ -13,6 +13,7 @@
 - Use the new error overlay UI from `@expo/log-box` ([#39958](https://github.com/expo/expo/pull/39958) by [@krystofwoldrich](https://github.com/krystofwoldrich))
 - Add split view layout support ([#39563](https://github.com/expo/expo/pull/39563) by [@Ubax](https://github.com/Ubax))
 - composition API for setting header options ([#40600](https://github.com/expo/expo/pull/40600) by [@Ubax](https://github.com/Ubax))
+- add header items composition API ([#40842](https://github.com/expo/expo/pull/40842) by [@Ubax](https://github.com/Ubax))
 
 ### 🐛 Bug fixes
 
