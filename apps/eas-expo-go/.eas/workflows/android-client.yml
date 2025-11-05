@@ -34,7 +34,6 @@ jobs:
   # https://docs.expo.dev/eas/workflows/pre-packaged-jobs/#slack
   # you can use https://github.com/expo/expo/pull/40224/commits/e5295e8518d07e9b16ad3ed23c46977232b6bb90 when the limitation drops
   notify_failure:
-    if: ${{ failure() && (github.event_name == 'schedule' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/sdk-')) }}
     name: 🔔 Notify on Slack
     after: [build_android]
     steps:
